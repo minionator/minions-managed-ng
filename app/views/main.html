@@ -1,5 +1,13 @@
-<div ng-repeat="workerType in workerTypes" ng-show="counts[workerType].count">
-  <h2>{{workerType}} ({{counts[workerType].count}})</h2>
+<ul class="nav nav-tabs">
+  <li  ng-repeat="workerType in workerTypes" ng-class="{active: workerType === selected.workerType}">
+    <a ng-click="selected.workerType=workerType;getData()">{{workerType}}</a>
+  </li>
+</ul>
+<div ng-show="loading" class="spinner">
+  <div class="cube1"></div>
+  <div class="cube2"></div>
+</div>
+<div ng-repeat="workerType in workerTypes" ng-show="!loading && workerType === selected.workerType && counts[workerType].count">
   <div ng-repeat="dataCenter in dataCenters" class="clearfix" ng-show="counts[workerType][dataCenter]">
     <h3>{{dataCenter}} ({{counts[workerType][dataCenter]}})</h3>
     <div class="clearfix col-sm-2" ng-repeat="minion in minions | filter: { workerType: workerType, dataCenter: dataCenter }">
