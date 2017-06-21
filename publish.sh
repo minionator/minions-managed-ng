@@ -12,5 +12,5 @@ if [[ `git --git-dir=$TRAVIS_BUILD_DIR/pages_repo/.git --work-tree=$TRAVIS_BUILD
   git --git-dir=$TRAVIS_BUILD_DIR/pages_repo/.git --work-tree=$TRAVIS_BUILD_DIR/pages_repo config user.email "${GIT_EMAIL}"
   git --git-dir=$TRAVIS_BUILD_DIR/pages_repo/.git --work-tree=$TRAVIS_BUILD_DIR/pages_repo add . -A
   git --git-dir=$TRAVIS_BUILD_DIR/pages_repo/.git --work-tree=$TRAVIS_BUILD_DIR/pages_repo commit -m "Travis CI publish ${TRAVIS_JOB_NUMBER} of https://github.com/${TRAVIS_REPO_SLUG}/commit/${TRAVIS_COMMIT}"
-  git --git-dir=$TRAVIS_BUILD_DIR/pages_repo/.git --work-tree=$TRAVIS_BUILD_DIR/pages_repo push --quiet "https://${GH_TOKEN}@${GH_REF}" master:${GH_PAGES_BRANCH} > /dev/null 2>&1
+  git --git-dir=$TRAVIS_BUILD_DIR/pages_repo/.git --work-tree=$TRAVIS_BUILD_DIR/pages_repo push --quiet "https://${GH_TOKEN}@${GH_REF}" ${GH_PAGES_BRANCH} > /dev/null 2>&1
 fi
