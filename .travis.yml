@@ -1,0 +1,26 @@
+sudo: false
+language: node_js
+before_install:
+- gem install sass compass
+node_js:
+- iojs
+before_script:
+- npm install -g bower grunt-cli generator-angular generator-karma grunt-karma yo
+- bower install
+script:
+- grunt build
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: "./publish.sh"
+  on:
+    branch: master
+    condition: "$TRAVIS_PULL_REQUEST = false"
+env:
+  global:
+  - GIT_NAME: Travis-CI
+  - GIT_EMAIL: travis.ci.build@gmail.com
+  - GH_REF: github.com/minionator/minions-managed-ng.git
+  - GH_PAGES_BRANCH: gh-pages
+  - GH_PAGES_CNAME: minions-managed.tk
+  - secure: "cdpLf0nwG8tZcNNzv1u7CN+jpHChMRnCjdjpSwV/QMCa5q8opj/3x5lvyWs38XC7FFgOV0NGDMcC3mGuYCbY5J//qVS6Lmhq1pfE7TyrVriJ53KevCJjgvVdzcWEEs/u+TWctKZfNlbWXD91EePq2N22KagP2zq0aUiNCQZGfLkB0fLRebV6XefuFtvyzgvSqvwJhzcyHpFAB/z2vnrmCJv4UovrUKYScnWh2POZ+086tX9O2JGHevQeULgNg9Cz6ztVx9UoweGFA3a5UokV7B4wy174c98i4UArRhJYy59dgiyHyeRuvztXI1LJ3E650usEFjY1tTnBCDEkcY6vvxZjC8ZLsRO16Y3H0ix3TzRG32IPDSRYpq8rBYDnVjCD8jt2FxWNJPo0Y8VvDr6rD+RmNKnlfWDGCqVe8UxOE0vE7H5/fFbWINP2WXC/njdqIUq+CeYdx7bKRy4ZkwmjAWfynqo+/JkAbJUqhrUd+cLk9zaMsnBJ3nsQtNg0uDXbzWqj5lfws6KPGqcYJeAEBeKI+YGgs+vVkFq0LdYci7Cznhw1AOrZs4hIHC8q1xqCipQnhJAEwjaJ5CU7EBNySIOX0SpX+JakseYeuw5l/9zvzRV0eEbJK4XDdSZGpfkbR/5h3U31cIpAWT21NJ8s6SYQkqu/3M47CC29EePFMDU="
