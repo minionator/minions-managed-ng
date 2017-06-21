@@ -3,6 +3,8 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+.pointer { cursor: pointer; }
+
 .spinner {
   margin: 100px auto;
   width: 40px;

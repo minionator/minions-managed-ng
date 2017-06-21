@@ -1,12 +1,12 @@
 <ul class="nav nav-tabs">
   <li ng-repeat="workerType in workerTypes" ng-class="{active: workerType === selected.workerType}" ng-show="counts[workerType].count">
-    <a ng-click="getData(workerType, selected.dataCenter)">{{workerType}} ({{counts[workerType].count}})</a>
+    <a class="pointer" ng-click="getData(workerType, selected.dataCenter)">{{workerType}} ({{counts[workerType].count}})</a>
   </li>
 </ul>
 <div style="padding: 10px;">
   <ul class="nav nav-tabs">
     <li  ng-repeat="dataCenter in dataCenters" ng-class="{active: dataCenter === selected.dataCenter}" ng-show="counts[selected.workerType][dataCenter]">
-      <a ng-click="getData(selected.workerType, dataCenter)">{{getRegion(dataCenter)}} ({{counts[selected.workerType][dataCenter]}})</a>
+      <a class="pointer" ng-click="getData(selected.workerType, dataCenter)">{{getRegion(dataCenter)}} ({{counts[selected.workerType][dataCenter]}})</a>
     </li>
   </ul>
 </div>
@@ -23,7 +23,7 @@
   }">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <a style="cursor: pointer;" ng-click="minion.showbody=!minion.showbody">{{minion._id.replace('0000000', 'i-')}}</a>
+        <a class="pointer" ng-click="minion.showbody=!minion.showbody">{{minion._id.replace('0000000', 'i-')}}</a>
       </h4>
       tasks: {{minion.tasks.length}}, restarts: {{minion.restarts.length}}, uptime: <span>{{getUptime(minion.created)}}</span>
     </div>
@@ -38,7 +38,7 @@
           <a href="https://console.aws.amazon.com/ec2/v2/home?region={{getRegion(minion.dataCenter)}}#Instances:instanceId={{minion._id.replace('0000000', 'i-')}}">ec2 console</a>
         </li>
         <li>
-          <a style="cursor: pointer;" ng-click="minion.showtasks=!minion.showtasks">tasks ({{minion.tasks.length}})</a>
+          <a class="pointer" ng-click="minion.showtasks=!minion.showtasks">tasks ({{minion.tasks.length}})</a>
           <ul ng-show="minion.tasks.length && minion.showtasks">
             <li ng-repeat="task in minion.tasks">
               <a href="https://tools.taskcluster.net/task-inspector/#{{task.id}}">{{task.id}}</a>
