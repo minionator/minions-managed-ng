@@ -10,7 +10,7 @@
 angular.module('minionsManagedNgApp')
   .factory('mmApi', function ($resource) {
     return $resource(
-      'http://ec2-52-90-242-185.compute-1.amazonaws.com/minions/alive',
+      'https://api.minions-managed.tk/minions/alive',
       {},
       {
         query: { isArray: true }

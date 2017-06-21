@@ -29,9 +29,51 @@ angular.module('minionsManagedNgApp')
       $scope.minions = minions.filter(function(minion){ return minion.workerType == $scope.selected.workerType; });
       $scope.loading = false;
     });
-    $scope.getData = function(){
-      $scope.loading = true;
-      $scope.minions = $scope.allMinions.filter(function(minion){ return minion.workerType == $scope.selected.workerType; });
-      $scope.loading = false;
+    $scope.getData = function(workerType, dataCenter) {
+      if ($scope.counts[workerType][dataCenter] > 0) {
+        $scope.loading = true;
+        $scope.selected.workerType = workerType;
+        $scope.selected.dataCenter = dataCenter;
+        $scope.minions = $scope.allMinions.filter(function(minion){ return minion.workerType === workerType && minion.dataCenter === dataCenter; });
+        $scope.loading = false;
+      }
+    };
+    function pluralise (value, period) {
+      return ((value === 1) ? period : period + 's');
     }
+    $scope.getUptime = function(start) {
+      if (start == null) {
+        return 'unknown';
+      }
+      var totalSeconds = ((new Date()) - (new Date(start))) / 1000;
+      var days = Math.floor(totalSeconds / 86400);
+      var hours = Math.floor((totalSeconds - (days * 86400 )) / 3600)
+      var minutes = Math.floor((totalSeconds - (days * 86400 ) - (hours * 3600 )) / 60)
+      var seconds = Math.floor((totalSeconds - (days * 86400 ) - (hours * 3600 ) - (minutes * 60)))
+      if (days > 0) {
+        return days + ' ' + pluralise(days, 'day');
+      } else if (hours > 0) {
+        return hours + ' ' + pluralise(hours, 'hour');
+      } else if (minutes > 0) {
+        return minutes + ' ' + pluralise(minutes, 'minute');
+      } else {
+        return seconds + pluralise(seconds, 'second');
+      }
+    }
+    $scope.getRegion = function(dataCenter){
+      switch (dataCenter) {
+        case 'use1':
+          return 'us-east-1';
+        case 'use2':
+          return 'us-east-2';
+        case 'usw1':
+          return 'us-west-1';
+        case 'usw2':
+          return 'us-west-2';
+        case 'euc1':
+          return 'eu-central-1';
+        default:
+          return dataCenter;
+      }
+    };
   });
