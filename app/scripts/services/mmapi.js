@@ -9,11 +9,24 @@
  */
 angular.module('minionsManagedNgApp')
   .factory('mmApi', function ($resource) {
+    var api = 'https://api.minions-managed.tk/';
     return $resource(
-      'https://api.minions-managed.tk/minions/alive',
-      {},
+      api,
       {
-        query: { isArray: true }
+        state: '@_state',
+        workerType: '@_workerType',
+        dataCenter: '@_dataCenter'
+      },
+      {
+        query: {
+          url: api + 'minions/:state/:workerType/:dataCenter',
+          isArray: true
+        },
+        counts: {
+          url: api + 'minion/:state/count',
+          method: 'GET',
+          isArray: true
+        }
       }
     );
   });

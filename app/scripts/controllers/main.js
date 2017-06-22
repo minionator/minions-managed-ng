@@ -12,31 +12,46 @@ angular.module('minionsManagedNgApp')
     $scope.workerTypes = ['gecko-t-win7-32', 'gecko-t-win7-32-gpu', 'gecko-t-win10-64', 'gecko-t-win10-64-gpu', 'gecko-1-b-win2012', 'gecko-2-b-win2012', 'gecko-3-b-win2012'];
     $scope.dataCenters = ['use1', 'use2', 'usw1', 'usw2', 'euc1'];
     $scope.selected = {
+      state: 'alive',
       workerType: $scope.workerTypes[0],
       dataCenter: $scope.dataCenters[0]
     };
-    $scope.loading = true;
-    mmApi.query({}, function (minions) {
-      $scope.counts = {};
-      $scope.workerTypes.forEach(function(workerType) {
-        $scope.counts[workerType] = { count: 0 };
-        $scope.dataCenters.forEach(function(dataCenter) {
-          $scope.counts[workerType][dataCenter] = minions.filter(function(minion){ return minion.workerType == workerType && minion.dataCenter == dataCenter; }).length;
-          $scope.counts[workerType].count += $scope.counts[workerType][dataCenter];
-        });
-      });
-      $scope.allMinions = minions;
-      $scope.minions = minions.filter(function(minion){ return minion.workerType == $scope.selected.workerType; });
-      $scope.loading = false;
-    });
+    function getCounts() {
+      mmApi.counts(
+        {state: $scope.selected.state},
+        function (counts) {
+          $scope.workerTypes = [];
+          $scope.dataCenters = [];
+          $scope.counts = {};
+          counts.forEach(function(count) {
+            if ($scope.workerTypes.indexOf(count._id.workerType) < 0) {
+              $scope.workerTypes.push(count._id.workerType);
+              $scope.workerTypes.sort();
+            }
+            if ($scope.dataCenters.indexOf(count._id.dataCenter) < 0) {
+              $scope.dataCenters.push(count._id.dataCenter);
+              $scope.dataCenters.sort();
+            }
+            if ($scope.counts[count._id.workerType] == null) {
+              $scope.counts[count._id.workerType] = { count: 0 };
+            }
+            $scope.counts[count._id.workerType][count._id.dataCenter] = count.count;
+            $scope.counts[count._id.workerType].count += count.count;
+          });
+          $scope.loading.counts = false;
+        }
+      );
+    }
     $scope.getData = function(workerType, dataCenter) {
-      if ($scope.counts[workerType][dataCenter] > 0) {
-        $scope.loading = true;
-        $scope.selected.workerType = workerType;
-        $scope.selected.dataCenter = dataCenter;
-        $scope.minions = $scope.allMinions.filter(function(minion){ return minion.workerType === workerType && minion.dataCenter === dataCenter; });
-        $scope.loading = false;
-      }
+      $scope.loading = { counts: true, minions: true };
+      $scope.dataCenters = [];
+      getCounts();
+      $scope.selected.workerType = workerType;
+      $scope.selected.dataCenter = dataCenter;
+      mmApi.query({state: $scope.selected.state, workerType: $scope.selected.workerType, dataCenter: $scope.selected.dataCenter}, function (minions) {
+        $scope.minions = minions;
+        $scope.loading.minions = false;
+      });
     };
     function pluralise (value, period) {
       return ((value === 1) ? period : period + 's');
@@ -60,7 +75,7 @@ angular.module('minionsManagedNgApp')
         return seconds + pluralise(seconds, 'second');
       }
     }
-    $scope.getRegion = function(dataCenter){
+    $scope.getRegion = function(dataCenter) {
       switch (dataCenter) {
         case 'use1':
           return 'us-east-1';
@@ -76,4 +91,5 @@ angular.module('minionsManagedNgApp')
           return dataCenter;
       }
     };
+    $scope.getData($scope.selected.workerType, $scope.selected.dataCenter);
   });

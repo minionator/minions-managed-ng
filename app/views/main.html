@@ -4,17 +4,17 @@
   </li>
 </ul>
 <div style="padding: 10px;">
-  <ul class="nav nav-tabs">
+  <ul class="nav nav-tabs" ng-hide="loading.counts">
     <li  ng-repeat="dataCenter in dataCenters" ng-class="{active: dataCenter === selected.dataCenter}" ng-show="counts[selected.workerType][dataCenter]">
       <a class="pointer" ng-click="getData(selected.workerType, dataCenter)">{{getRegion(dataCenter)}} ({{counts[selected.workerType][dataCenter]}})</a>
     </li>
   </ul>
 </div>
-<div ng-show="loading" class="spinner">
+<div ng-show="loading.counts || loading.minions" class="spinner">
   <div class="cube1"></div>
   <div class="cube2"></div>
 </div>
-<div class="clearfix col-sm-2" ng-repeat="minion in minions | orderBy : 'created' : reverse">
+<div class="clearfix col-sm-2" ng-repeat="minion in minions | orderBy : 'created' : reverse" ng-hide="loading.minions">
   <div class="panel" ng-class="{
     'panel-default': (minion.tasks.length === 0 && (minion.restarts.length - minion.tasks.length) < 2),
     'panel-info': (minion.tasks.length > 0 && (minion.restarts.length - minion.tasks.length) < 2),
