@@ -49,7 +49,9 @@
           <a style="cursor: pointer;" ng-click="minion.showrestarts=!minion.showrestarts">restarts ({{minion.restarts.length}})</a>
           <ul ng-show="minion.restarts.length && minion.showrestarts">
             <li ng-repeat="restart in minion.restarts">
-              {{restart.time}} {{restart.comment}}
+              {{restart.time}}<br />
+              {{restart.user}}<br />
+              {{restart.comment}}
             </li>
           </ul>
         </li>
