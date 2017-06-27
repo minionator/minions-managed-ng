@@ -34,6 +34,7 @@
       <ul>
         <li>ip: {{minion.ipAddress}}</li>
         <li>created: {{minion.created}}</li>
+        <li ng-show="minion.instanceType">instance type: {{minion.instanceType}}</li>
         <li>
           <a href="https://papertrailapp.com/groups/2488493/events?q={{minion._id.replace('0000000', 'i-')}}">event logs</a>
         </li>
