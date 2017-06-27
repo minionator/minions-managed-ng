@@ -5,6 +5,7 @@ before_install:
 node_js:
 - iojs
 before_script:
+- npm config set registry http://registry.npmjs.org/
 - npm install -g bower grunt-cli generator-angular generator-karma grunt-karma yo
 - bower install
 script:
