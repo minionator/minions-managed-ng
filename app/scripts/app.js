@@ -33,7 +33,30 @@ angular
       .otherwise({
         redirectTo: '/home'
       });
-  });
+  })
+  .value(
+    'personas',
+    [
+      'amazed',
+      'bananas',
+      'big',
+      'cake',
+      'crazy',
+      'curious',
+      'dancing',
+      'duck',
+      'girl',
+      'golf',
+      'happy',
+      'hello',
+      'kungfu',
+      'reading',
+      'sad',
+      'shout',
+      'shy',
+      'superman'
+    ]
+  );
 
 function pad(n, width, z) {
   z = z || '0';
