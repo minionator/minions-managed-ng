@@ -28,8 +28,13 @@ angular.module('minionsManagedNgApp')
           method: 'GET',
           isArray: true
         },
-        history: {
+        allHistory: {
           url: api + 'minion/:period/stats',
+          method: 'GET',
+          isArray: true
+        },
+        history: {
+          url: api + 'minion/:workerType/:period/stats',
           method: 'GET',
           isArray: true
         }

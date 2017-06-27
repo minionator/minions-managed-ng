@@ -9,12 +9,7 @@
  */
 angular.module('minionsManagedNgApp')
   .controller('ChartCtrl', function ($scope, mmApi) {
-    function pad(n, width, z) {
-      z = z || '0';
-      n = n + '';
-      return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-    }
-    mmApi.history(
+    mmApi.allHistory(
       {period: 'day'},
       function (counts) {
         var dates = Array.from(new Set(counts.map(function(count){return count._id.year + '-' + pad(count._id.month, 2) + '-' + pad(count._id.day, 2);})));

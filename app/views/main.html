@@ -4,6 +4,9 @@
   </li>
 </ul>
 <div style="padding: 10px;">
+  <div style="height: 200px;">
+    <canvas class="chart chart-line" chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series" chart-options="{maintainAspectRatio: false}"></canvas>
+  </div>
   <ul class="nav nav-tabs" ng-hide="loading.counts">
     <li  ng-repeat="dataCenter in dataCenters" ng-class="{active: dataCenter === selected.dataCenter}" ng-show="counts[selected.workerType][dataCenter]">
       <a class="pointer" ng-click="getData(selected.workerType, dataCenter)">{{getRegion(dataCenter)}} ({{counts[selected.workerType][dataCenter]}})</a>

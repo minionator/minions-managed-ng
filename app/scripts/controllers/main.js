@@ -42,11 +42,34 @@ angular.module('minionsManagedNgApp')
         }
       );
     }
+    function getChart() {
+      mmApi.history(
+        {workerType: $scope.selected.workerType,period: 'hour'},
+        function (counts) {
+          var dates = Array.from(new Set(counts.map(function(count){return pad(count._id.month, 2) + '/' + pad(count._id.day, 2) + ' ' + pad(count._id.hour, 2);})));
+          dates.sort();
+          var dataCenters = Array.from(new Set(counts.map(function(count){return count._id.dataCenter;})));
+          dataCenters.sort();
+          $scope.chart = {
+            labels: dates,
+            series: dataCenters,
+            data: dataCenters.map(function(dataCenter){
+              return dates.map(function(date){
+                return (counts.find(function(count){
+                  return dataCenter === count._id.dataCenter && date === pad(count._id.month, 2) + '/' + pad(count._id.day, 2) + ' ' + pad(count._id.hour, 2);
+                }) || { count: 0 }).count;
+              });
+            })
+          };
+        }
+      );
+    }
     $scope.getData = function(workerType, dataCenter) {
       $scope.loading = { counts: true, minions: true };
       $scope.dataCenters = [];
       getCounts();
       $scope.selected.workerType = workerType;
+      getChart();
       $scope.selected.dataCenter = dataCenter;
       mmApi.query({state: $scope.selected.state, workerType: $scope.selected.workerType, dataCenter: $scope.selected.dataCenter}, function (minions) {
         $scope.minions = minions;
