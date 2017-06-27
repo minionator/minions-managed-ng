@@ -12,13 +12,12 @@ angular.module('minionsManagedNgApp')
     $scope.workerTypes = ['gecko-1-b-win2012', 'gecko-2-b-win2012', 'gecko-3-b-win2012', 'gecko-t-win7-32', 'gecko-t-win7-32-gpu', 'gecko-t-win10-64', 'gecko-t-win10-64-gpu'];
     $scope.dataCenters = ['euc1', 'use1', 'use2', 'usw1', 'usw2'];
     $scope.selected = {
-      state: 'alive',
       workerType: $scope.workerTypes[0],
       dataCenter: $scope.dataCenters[1]
     };
     function getCounts() {
       mmApi.counts(
-        {state: $scope.selected.state},
+        {state: 'alive'},
         function (counts) {
           $scope.workerTypes = [];
           $scope.dataCenters = [];
@@ -65,25 +64,31 @@ angular.module('minionsManagedNgApp')
       );
     }
     $scope.getData = function(workerType, dataCenter) {
-      $scope.loading = { counts: true, minions: true };
+      $scope.loading = { counts: true, minions: { alive: true, dead: true } };
       $scope.dataCenters = [];
+      $scope.minions = {};
       getCounts();
       $scope.selected.workerType = workerType;
       getChart();
       $scope.selected.dataCenter = dataCenter;
-      mmApi.query({state: $scope.selected.state, workerType: $scope.selected.workerType, dataCenter: $scope.selected.dataCenter}, function (minions) {
-        $scope.minions = minions;
-        $scope.loading.minions = false;
+      mmApi.query({state: 'alive', workerType: $scope.selected.workerType, dataCenter: $scope.selected.dataCenter}, function (minions) {
+        $scope.minions.alive = minions;
+        $scope.loading.minions.alive = false;
+      });
+      mmApi.query({state: 'dead', workerType: $scope.selected.workerType, dataCenter: $scope.selected.dataCenter}, function (minions) {
+        $scope.minions.dead = minions;
+        $scope.loading.minions.dead = false;
       });
     };
     function pluralise (value, period) {
       return ((value === 1) ? period : period + 's');
     }
-    $scope.getUptime = function(start) {
+    $scope.getUptime = function(start, end) {
       if (start == null) {
         return 'unknown';
       }
-      var totalSeconds = ((new Date()) - (new Date(start))) / 1000;
+      var endDate = end ? new Date(end) : new Date();
+      var totalSeconds = (endDate - (new Date(start))) / 1000;
       var days = Math.floor(totalSeconds / 86400);
       var hours = Math.floor((totalSeconds - (days * 86400 )) / 3600)
       var minutes = Math.floor((totalSeconds - (days * 86400 ) - (hours * 3600 )) / 60)

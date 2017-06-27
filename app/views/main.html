@@ -13,53 +13,111 @@
     </li>
   </ul>
 </div>
-<div ng-show="loading.counts || loading.minions" class="spinner">
-  <div class="cube1"></div>
-  <div class="cube2"></div>
-</div>
-<div class="clearfix col-sm-2" ng-repeat="minion in minions | orderBy : 'created'" ng-hide="loading.minions">
-  <div class="panel" ng-class="{
-    'panel-default': (minion.tasks.length === 0 && (minion.restarts.length - minion.tasks.length) < 2),
-    'panel-info': (minion.tasks.length > 0 && (minion.restarts.length - minion.tasks.length) < 2),
-    'panel-warning': ((minion.restarts.length - minion.tasks.length) === 2),
-    'panel-danger': ((minion.restarts.length - minion.tasks.length) > 2)
-  }">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="pointer" ng-click="minion.showbody=!minion.showbody">{{minion._id.replace('0000000', 'i-')}}</a>
-      </h4>
-      tasks: {{minion.tasks.length}}, restarts: {{minion.restarts.length}}, uptime: <span>{{getUptime(minion.created)}}</span>
+<div class="clearfix">
+  <h3>running instances ({{counts[selected.workerType][selected.dataCenter]}})</h3>
+  <div ng-show="loading.counts || loading.minions.alive" class="spinner">
+    <div class="cube1"></div>
+    <div class="cube2"></div>
+  </div>
+  <div class="clearfix col-sm-2" ng-repeat="minion in minions.alive | orderBy : 'created'" ng-hide="loading.minions.alive">
+    <div class="panel" ng-class="{
+      'panel-default': (minion.tasks.length === 0 && (minion.restarts.length - minion.tasks.length) < 2),
+      'panel-info': (minion.tasks.length > 0 && (minion.restarts.length - minion.tasks.length) < 2),
+      'panel-warning': ((minion.restarts.length - minion.tasks.length) === 2),
+      'panel-danger': ((minion.restarts.length - minion.tasks.length) > 2)
+    }">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a class="pointer" ng-click="minion.showbody=!minion.showbody">{{minion._id.replace('0000000', 'i-')}}</a>
+        </h4>
+        tasks: {{minion.tasks.length}}, restarts: {{minion.restarts.length}}, uptime: <span>{{getUptime(minion.created)}}</span>
+      </div>
+      <div class="panel-body" ng-show="minion.showbody">
+        <ul>
+          <li>ip: {{minion.ipAddress}}</li>
+          <li>created: {{minion.created}}</li>
+          <li ng-show="minion.instanceType">instance type: {{minion.instanceType}}</li>
+          <li>
+            <a href="https://papertrailapp.com/groups/2488493/events?q={{minion._id.replace('0000000', 'i-')}}">event logs</a>
+          </li>
+          <li>
+            <a href="https://console.aws.amazon.com/ec2/v2/home?region={{getRegion(minion.dataCenter)}}#Instances:instanceId={{minion._id.replace('0000000', 'i-')}}">ec2 console</a>
+          </li>
+          <li>
+            <a class="pointer" ng-click="minion.showtasks=!minion.showtasks">tasks ({{minion.tasks.length}})</a>
+            <ul ng-show="minion.tasks.length && minion.showtasks">
+              <li ng-repeat="task in minion.tasks">
+                <a href="https://tools.taskcluster.net/task-inspector/#{{task.id}}">{{task.id}}</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a style="cursor: pointer;" ng-click="minion.showrestarts=!minion.showrestarts">restarts ({{minion.restarts.length}})</a>
+            <ul ng-show="minion.restarts.length && minion.showrestarts">
+              <li ng-repeat="restart in minion.restarts">
+                {{restart.time}}<br />
+                {{restart.user}}<br />
+                {{restart.comment}}
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="panel-body" ng-show="minion.showbody">
-      <ul>
-        <li>ip: {{minion.ipAddress}}</li>
-        <li>created: {{minion.created}}</li>
-        <li ng-show="minion.instanceType">instance type: {{minion.instanceType}}</li>
-        <li>
-          <a href="https://papertrailapp.com/groups/2488493/events?q={{minion._id.replace('0000000', 'i-')}}">event logs</a>
-        </li>
-        <li>
-          <a href="https://console.aws.amazon.com/ec2/v2/home?region={{getRegion(minion.dataCenter)}}#Instances:instanceId={{minion._id.replace('0000000', 'i-')}}">ec2 console</a>
-        </li>
-        <li>
-          <a class="pointer" ng-click="minion.showtasks=!minion.showtasks">tasks ({{minion.tasks.length}})</a>
-          <ul ng-show="minion.tasks.length && minion.showtasks">
-            <li ng-repeat="task in minion.tasks">
-              <a href="https://tools.taskcluster.net/task-inspector/#{{task.id}}">{{task.id}}</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a style="cursor: pointer;" ng-click="minion.showrestarts=!minion.showrestarts">restarts ({{minion.restarts.length}})</a>
-          <ul ng-show="minion.restarts.length && minion.showrestarts">
-            <li ng-repeat="restart in minion.restarts">
-              {{restart.time}}<br />
-              {{restart.user}}<br />
-              {{restart.comment}}
-            </li>
-          </ul>
-        </li>
-      </ul>
+  </div>
+</div>
+<hr class="clearfix" />
+<div class="clearfix">
+  <h3>terminated instances ({{minions.dead.length}})</h3>
+  <p>results limited to the last day</p>
+  <div ng-show="loading.counts || loading.minions.dead" class="spinner">
+    <div class="cube1"></div>
+    <div class="cube2"></div>
+  </div>
+  <div class="clearfix col-sm-2" ng-repeat="minion in minions.dead | orderBy : 'created'" ng-hide="loading.minions.dead">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a class="pointer" ng-click="minion.showbody=!minion.showbody">{{minion._id.replace('0000000', 'i-')}}</a>
+        </h4>
+        tasks: {{minion.tasks.length}}, restarts: {{minion.restarts.length}}, uptime: <span>{{getUptime(minion.created, minion.terminated.time)}}</span>
+      </div>
+      <div class="panel-body" ng-show="minion.showbody">
+        <ul>
+          <li>ip: {{minion.ipAddress}}</li>
+          <li>created: {{minion.created}}</li>
+          <li>
+            terminated: {{minion.terminated.time}}<br />
+            {{minion.terminated.user}}<br />
+            {{minion.terminated.comment}}
+          </li>
+          <li ng-show="minion.instanceType">instance type: {{minion.instanceType}}</li>
+          <li>
+            <a href="https://papertrailapp.com/groups/2488493/events?q={{minion._id.replace('0000000', 'i-')}}">event logs</a>
+          </li>
+          <li>
+            <a href="https://console.aws.amazon.com/ec2/v2/home?region={{getRegion(minion.dataCenter)}}#Instances:instanceId={{minion._id.replace('0000000', 'i-')}}">ec2 console</a>
+          </li>
+          <li>
+            <a class="pointer" ng-click="minion.showtasks=!minion.showtasks">tasks ({{minion.tasks.length}})</a>
+            <ul ng-show="minion.tasks.length && minion.showtasks">
+              <li ng-repeat="task in minion.tasks">
+                <a href="https://tools.taskcluster.net/task-inspector/#{{task.id}}">{{task.id}}</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a style="cursor: pointer;" ng-click="minion.showrestarts=!minion.showrestarts">restarts ({{minion.restarts.length}})</a>
+            <ul ng-show="minion.restarts.length && minion.showrestarts">
+              <li ng-repeat="restart in minion.restarts">
+                {{restart.time}}<br />
+                {{restart.user}}<br />
+                {{restart.comment}}
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
