@@ -9,12 +9,12 @@
  */
 angular.module('minionsManagedNgApp')
   .controller('MainCtrl', function ($scope, mmApi) {
-    $scope.workerTypes = ['gecko-t-win7-32', 'gecko-t-win7-32-gpu', 'gecko-t-win10-64', 'gecko-t-win10-64-gpu', 'gecko-1-b-win2012', 'gecko-2-b-win2012', 'gecko-3-b-win2012'];
-    $scope.dataCenters = ['use1', 'use2', 'usw1', 'usw2', 'euc1'];
+    $scope.workerTypes = ['gecko-1-b-win2012', 'gecko-2-b-win2012', 'gecko-3-b-win2012', 'gecko-t-win7-32', 'gecko-t-win7-32-gpu', 'gecko-t-win10-64', 'gecko-t-win10-64-gpu'];
+    $scope.dataCenters = ['euc1', 'use1', 'use2', 'usw1', 'usw2'];
     $scope.selected = {
       state: 'alive',
       workerType: $scope.workerTypes[0],
-      dataCenter: $scope.dataCenters[0]
+      dataCenter: $scope.dataCenters[1]
     };
     function getCounts() {
       mmApi.counts(
