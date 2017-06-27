@@ -14,6 +14,7 @@ angular.module('minionsManagedNgApp')
       api,
       {
         state: '@_state',
+        period: '@_period',
         workerType: '@_workerType',
         dataCenter: '@_dataCenter'
       },
@@ -24,6 +25,11 @@ angular.module('minionsManagedNgApp')
         },
         counts: {
           url: api + 'minion/:state/count',
+          method: 'GET',
+          isArray: true
+        },
+        history: {
+          url: api + 'minion/:period/stats',
           method: 'GET',
           isArray: true
         }
