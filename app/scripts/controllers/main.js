@@ -64,7 +64,7 @@ angular.module('minionsManagedNgApp')
       );
     }
     $scope.getData = function(workerType, dataCenter) {
-      $scope.loading = { counts: true, minions: { alive: true, dead: true } };
+      $scope.loading = { counts: true, minions: { alive: true, idle: true, dead: true } };
       $scope.dataCenters = [];
       $scope.minions = {};
       getCounts();
@@ -76,7 +76,13 @@ angular.module('minionsManagedNgApp')
         $scope.loading.minions.alive = false;
       });
       mmApi.query({state: 'dead', workerType: $scope.selected.workerType, dataCenter: $scope.selected.dataCenter}, function (minions) {
-        $scope.minions.dead = minions;
+        $scope.minions.idle = minions.filter(function(minion){
+          return !minion.tasks || minion.tasks.length === 0;
+        });
+        $scope.loading.minions.idle = false;
+        $scope.minions.dead = minions.filter(function(minion){
+          return minion.tasks && minion.tasks.length;
+        });
         $scope.loading.minions.dead = false;
       });
     };
