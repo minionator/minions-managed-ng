@@ -89,7 +89,7 @@ angular.module('minionsManagedNgApp')
     function pluralise (value, period) {
       return ((value === 1) ? period : period + 's');
     }
-    $scope.getUptime = function(start, end) {
+    $scope.getUptime = function(start, end, precise) {
       if (start == null) {
         return 'unknown';
       }
@@ -99,15 +99,17 @@ angular.module('minionsManagedNgApp')
       var hours = Math.floor((totalSeconds - (days * 86400 )) / 3600)
       var minutes = Math.floor((totalSeconds - (days * 86400 ) - (hours * 3600 )) / 60)
       var seconds = Math.floor((totalSeconds - (days * 86400 ) - (hours * 3600 ) - (minutes * 60)))
+      if (precise) {
+        return (days + ' ' + hours + ':' + minutes + ':' + seconds);
+      }
       if (days > 0) {
         return days + ' ' + pluralise(days, 'day');
       } else if (hours > 0) {
         return hours + ' ' + pluralise(hours, 'hour');
       } else if (minutes > 0) {
         return minutes + ' ' + pluralise(minutes, 'minute');
-      } else {
-        return seconds + pluralise(seconds, 'second');
       }
+      return seconds + pluralise(seconds, 'second');
     }
     $scope.getRegion = function(dataCenter) {
       switch (dataCenter) {
