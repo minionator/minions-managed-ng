@@ -111,6 +111,19 @@ angular.module('minionsManagedNgApp')
       }
       return seconds + pluralise(seconds, 'second');
     }
+    $scope.getTtl = function(minion) {
+      if (minion.spotRequest == null || minion.spotRequest.created == null || minion.tasks == null || minion.tasks.length < 1) {
+        return 'unknown';
+      }
+      var start = new Date(minion.spotRequest.created);
+      var end = new Date(minion.tasks[0].started);
+      var totalSeconds = (end - start) / 1000;
+      var days = Math.floor(totalSeconds / 86400);
+      var hours = Math.floor((totalSeconds - (days * 86400 )) / 3600)
+      var minutes = Math.floor((totalSeconds - (days * 86400 ) - (hours * 3600 )) / 60)
+      var seconds = Math.floor((totalSeconds - (days * 86400 ) - (hours * 3600 ) - (minutes * 60)))
+      return (hours + ':' + minutes + ':' + seconds);
+    }
     $scope.getRegion = function(dataCenter) {
       switch (dataCenter) {
         case 'use1':

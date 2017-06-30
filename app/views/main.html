@@ -35,6 +35,7 @@
       <div class="panel-body" ng-show="minion.showbody">
         <ul>
           <li>uptime: {{getUptime(minion.created, minion.terminated.time, true)}}</li>
+          <li>ttl: {{getTtl(minion)}}</li>
           <li ng-show="minion.spotRequest">
             spot request: {{minion.spotRequest.id}}
             <ul>
@@ -97,6 +98,7 @@
       <div class="panel-body" ng-show="minion.showbody">
         <ul>
           <li>uptime: {{getUptime(minion.created, minion.terminated.time, true)}}</li>
+          <li>ttl: {{getTtl(minion)}}</li>
           <li ng-show="minion.spotRequest">
             spot request: {{minion.spotRequest.id}}
             <ul>
@@ -164,6 +166,7 @@
       <div class="panel-body" ng-show="minion.showbody">
         <ul>
           <li>uptime: {{getUptime(minion.created, minion.terminated.time, true)}}</li>
+          <li>ttl: {{getTtl(minion)}}</li>
           <li ng-show="minion.spotRequest">
             spot request: {{minion.spotRequest.id}}
             <ul>
