@@ -140,5 +140,16 @@ angular.module('minionsManagedNgApp')
           return dataCenter;
       }
     };
+    $scope.showBody = {
+      alive: false,
+      idle: false,
+      dead: false
+    }
+    $scope.toggle = function(state) {
+      $scope.showBody[state] = !$scope.showBody[state];
+      $scope.minions[state].forEach(function(minion){
+        minion.showbody = $scope.showBody[state];
+      });
+    };
     $scope.getData($scope.selected.workerType, $scope.selected.dataCenter);
   });

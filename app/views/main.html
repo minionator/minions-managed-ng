@@ -14,11 +14,20 @@
   </ul>
 </div>
 <div class="clearfix" ng-repeat="state in ['alive', 'idle', 'dead']">
-  <h3>
-    <span ng-show="state === 'alive'">living</span><span ng-show="state !== 'alive'">{{state}}</span> minions ({{minions[state].length}})
-  </h3>
-  <p ng-show="state === 'idle'">minions that did no work before expiring. results limited to the last day.</p>
-  <p ng-show="state === 'dead'">results limited to the last day.</p>
+  <div class="row">
+    <div class="clearfix col-sm-10">
+      <h3>
+        <span ng-show="state === 'alive'">living</span><span ng-show="state !== 'alive'">{{state}}</span> minions ({{minions[state].length}})
+      </h3>
+      <p ng-show="state === 'idle'">minions that did no work before expiring. results limited to the last day.</p>
+      <p ng-show="state === 'dead'">results limited to the last day.</p>
+    </div>
+    <div class="clearfix col-sm-2">
+      <button class="btn btn-small pull-right" ng-click="toggle(state)">
+        <span class="glyphicon"" ng-class="{'glyphicon-plus': !showBody[state], 'glyphicon-minus': showBody[state]}"></span>
+      </button>
+    </div>
+  </div>
   <div ng-show="loading.counts || loading.minions.alive" class="spinner">
     <div class="cube1"></div>
     <div class="cube2"></div>
