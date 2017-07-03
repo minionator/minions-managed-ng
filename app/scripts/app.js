@@ -20,7 +20,7 @@ angular
   ])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/home', {
+      .when('/minions/:workerType?/:dataCenter?', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         controllerAs: 'main'
@@ -31,7 +31,7 @@ angular
         controllerAs: 'chart'
       })
       .otherwise({
-        redirectTo: '/home'
+        redirectTo: '/minions'
       });
   })
   .value(
