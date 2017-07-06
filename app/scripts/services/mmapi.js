@@ -10,17 +10,19 @@
 angular.module('minionsManagedNgApp')
   .factory('mmApi', function ($resource) {
     var api = 'https://api.minions-managed.tk/';
+
     return $resource(
       api,
       {
         state: '@_state',
         period: '@_period',
         workerType: '@_workerType',
-        dataCenter: '@_dataCenter'
+        dataCenter: '@_dataCenter',
+        limit: '@_limit'
       },
       {
         query: {
-          url: api + 'minions/:state/:workerType/:dataCenter',
+          url: api + 'minions/:state/:workerType/:dataCenter/:limit',
           isArray: true
         },
         counts: {

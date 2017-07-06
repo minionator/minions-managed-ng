@@ -19,8 +19,8 @@
       <h3>
         <span ng-show="state === 'alive'">living</span><span ng-show="state !== 'alive'">{{state}}</span> minions ({{minions[state].length}})
       </h3>
-      <p ng-show="state === 'idle'">minions that did no work before expiring. results limited to the last day.</p>
-      <p ng-show="state === 'dead'">results limited to the last day.</p>
+      <p ng-show="state === 'idle'">minions that did no work before expiring.</p>
+      <p ng-show="['idle', 'dead'].includes(state) && minions[state].length === 100">results limited to the last 100.</p>
     </div>
     <div class="clearfix col-sm-2">
       <button class="btn btn-small pull-right" ng-click="toggle(state)">

@@ -73,11 +73,11 @@ angular.module('minionsManagedNgApp')
       $scope.selected.workerType = workerType;
       getChart();
       $scope.selected.dataCenter = dataCenter;
-      mmApi.query({state: 'alive', workerType: $scope.selected.workerType, dataCenter: $scope.selected.dataCenter}, function (minions) {
+      mmApi.query({state: 'alive', workerType: $scope.selected.workerType, dataCenter: $scope.selected.dataCenter, limit: 1000}, function (minions) {
         $scope.minions.alive = minions;
         $scope.loading.minions.alive = false;
       });
-      mmApi.query({state: 'dead', workerType: $scope.selected.workerType, dataCenter: $scope.selected.dataCenter}, function (minions) {
+      mmApi.query({state: 'dead', workerType: $scope.selected.workerType, dataCenter: $scope.selected.dataCenter, limit: 100}, function (minions) {
         $scope.minions.idle = minions.filter(function(minion){
           return !minion.tasks || minion.tasks.length === 0;
         });
