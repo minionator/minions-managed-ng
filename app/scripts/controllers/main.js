@@ -144,13 +144,35 @@ angular.module('minionsManagedNgApp')
     };
     $scope.getLogUrl = function(minion) {
       if (minion.dataCenter.startsWith('mdc')) {
-        return 'https://papertrailapp.com/systems/t-w1064-ms-' + minion._id.slice(-3) + '.' + minion.dataCenter + '.mozilla.com/events';
+        switch (minion._id.slice(17, 18)) {
+          case '00': // gecko-t-win10-64-hw
+            return 'https://papertrailapp.com/systems/t-w1064-ms-' + minion._id.slice(-3) + '.' + minion.dataCenter + '.mozilla.com/events';
+          case '01': // gecko-t-win7-32-hw
+            return 'https://papertrailapp.com/systems/t-w732-ms-' + minion._id.slice(-3) + '.' + minion.dataCenter + '.mozilla.com/events';
+          case '02': // gecko-t-osx-1010
+            return 'https://papertrailapp.com/systems/t-yosemite-r7-' + minion._id.slice(-3) + '.test.releng.' + minion.dataCenter + '.mozilla.com/events';
+          case '03': // gecko-t-linux-talos
+            return 'https://papertrailapp.com/systems/t-linux64-ms-' + minion._id.slice(-3) + '.test.releng.' + minion.dataCenter + '.mozilla.com/events';
+          default:
+            return null;
+        }
       }
       return 'https://papertrailapp.com/systems/' + minion._id.replace('0000000', 'i-') + '.' + minion.workerType + '.' + minion.dataCenter + '.mozilla.com/events';
     };
     $scope.getHostname = function(minion) {
       if (minion.dataCenter.startsWith('mdc')) {
-        return 't-w1064-ms-' + minion._id.slice(-3);
+        switch (minion._id.slice(17, 18)) {
+          case '00': // gecko-t-win10-64-hw
+            return 't-w1064-ms-' + minion._id.slice(-3);
+          case '01': // gecko-t-win7-32-hw
+            return 't-w732-ms-' + minion._id.slice(-3);
+          case '02': // gecko-t-osx-1010
+            return 't-yosemite-r7-' + minion._id.slice(-3);
+          case '03': // gecko-t-linux-talos
+            return 't-linux64-ms-' + minion._id.slice(-3);
+          default:
+            return minion._id;
+        }
       }
       return minion._id.replace('0000000', 'i-');
     };
