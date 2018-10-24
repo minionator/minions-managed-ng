@@ -63,10 +63,10 @@
           {{minion.spotRequest.fulfilled | date: 'HH:mm'}}
         </div>
         <div>
-          <a href="https://papertrailapp.com/groups/2488493/events?q={{minion._id.replace('0000000', 'i-')}}" title="event logs">
+          <a href="{{getLogUrl(minion)}}" title="event logs">
             <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
           </a>
-          <a href="https://console.aws.amazon.com/ec2/v2/home?region={{getRegion(minion.dataCenter)}}#Instances:instanceId={{minion._id.replace('0000000', 'i-')}}" title="ec2 console">
+          <a href="https://console.aws.amazon.com/ec2/v2/home?region={{getRegion(minion.dataCenter)}}#Instances:instanceId={{minion._id.replace('0000000', 'i-')}}" title="ec2 console" ng-hide="(minion.dataCenter.startsWith('mdc'))">
             <span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span>
           </a>
         </div>

@@ -11,11 +11,11 @@ angular.module('minionsManagedNgApp')
   .controller('MainCtrl', function ($scope, $location, $routeParams, mmApi) {
     $scope.path = $location.path();
     $scope.routeParams = $routeParams;
-    $scope.workerTypes = ['gecko-1-b-win2012', 'gecko-2-b-win2012', 'gecko-3-b-win2012', 'gecko-t-win7-32', 'gecko-t-win7-32-gpu', 'gecko-t-win10-64', 'gecko-t-win10-64-gpu'];
-    $scope.dataCenters = ['euc1', 'use1', 'use2', 'usw1', 'usw2'];
+    $scope.workerTypes = ['gecko-1-b-win2012', 'gecko-2-b-win2012', 'gecko-3-b-win2012', 'gecko-t-win7-32', 'gecko-t-win7-32-gpu', 'gecko-t-win10-64', 'gecko-t-win10-64-gpu', 'gecko-t-win10-64-hw'];
+    $scope.dataCenters = ($routeParams.workerType && ($routeParams.workerType.endsWith('-hw'))) ? ['mdc1', 'mdc2'] : ['use1', 'use2', 'usw1', 'usw2', 'euc1'];
     $scope.selected = {
       workerType: $routeParams.workerType || $scope.workerTypes[0],
-      dataCenter: $routeParams.dataCenter || $scope.dataCenters[1]
+      dataCenter: $routeParams.dataCenter || $scope.dataCenters[0]
     };
     function getCounts() {
       mmApi.counts(
@@ -141,6 +141,12 @@ angular.module('minionsManagedNgApp')
         default:
           return dataCenter;
       }
+    };
+    $scope.getLogUrl = function(minion) {
+      if (minion.dataCenter.startsWith('mdc')) {
+        return 'https://papertrailapp.com/systems/t-w1064-ms-' + minion._id.slice(-3) + '.' + minion.dataCenter + '.mozilla.com/events';
+      }
+      return 'https://papertrailapp.com/systems/' + minion._id.replace('0000000', 'i-') + '.' + minion.workerType + '.' + minion.dataCenter + '.mozilla.com/events';
     };
     $scope.showBody = {
       alive: false,
