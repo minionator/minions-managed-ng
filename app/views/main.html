@@ -1,6 +1,9 @@
 <ul class="nav nav-tabs">
   <li ng-repeat="workerType in workerTypes" ng-class="{active: workerType === selected.workerType}" ng-show="counts[workerType].count">
-    <a class="pointer" ng-href="#!/minions/{{workerType}}/{{selected.dataCenter}}">{{workerType}} ({{counts[workerType].count}})</a>
+    <a class="pointer" ng-href="#!/minions/{{workerType}}/{{selected.dataCenter}}">
+      <span class="fab" ng-class="{'fa-apple': workerType.includes('-osx-'),'fa-linux': workerType.includes('-linux-'),'fa-windows': workerType.includes('-win')}"></span>
+      {{workerType}} ({{counts[workerType].count}})
+    </a>
   </li>
 </ul>
 <div style="padding: 10px;">
@@ -41,7 +44,10 @@
     }">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a class="pointer" ng-click="minion.showbody=!minion.showbody">{{getHostname(minion)}}</a>
+          <a class="pointer" ng-click="minion.showbody=!minion.showbody">
+            <span class="fab" ng-class="{'fa-apple': minion.workerType.includes('-osx-'),'fa-linux': minion.workerType.includes('-linux-'),'fa-windows': minion.workerType.includes('-win')}"></span>
+            {{getHostname(minion)}}
+          </a>
         </h4>
         tasks: {{minion.tasks.length}}, restarts: {{minion.restarts.length}}, uptime: <span>{{getUptime(minion.created, minion.terminated.time)}}</span>
       </div>

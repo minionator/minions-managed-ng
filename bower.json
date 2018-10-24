@@ -10,7 +10,8 @@
     "angular-route": "^1.4.0",
     "angular-sanitize": "^1.4.0",
     "angular-touch": "^1.4.0",
-    "angular-chart.js": "^1.1.1"
+    "angular-chart.js": "^1.1.1",
+    "components-font-awesome": "^5.0.6"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"
@@ -23,6 +24,30 @@
         "less/bootstrap.less",
         "dist/css/bootstrap.css",
         "dist/js/bootstrap.js"
+      ]
+    },
+    "components-font-awesome": {
+      "main": [
+        "css/fontawesome-all.css",
+        "scss/fontawesome.scss",
+        "scss/fa-brands.scss",
+        "scss/fa-regular.scss",
+        "scss/fa-solid.scss",
+        "webfonts/fa-brands-400.eot",
+        "webfonts/fa-brands-400.woff2",
+        "webfonts/fa-brands-400.woff",
+        "webfonts/fa-brands-400.ttf",
+        "webfonts/fa-brands-400.svg",
+        "webfonts/fa-regular-400.eot",
+        "webfonts/fa-regular-400.woff2",
+        "webfonts/fa-regular-400.woff",
+        "webfonts/fa-regular-400.ttf",
+        "webfonts/fa-regular-400.svg",
+        "webfonts/fa-solid-900.eot",
+        "webfonts/fa-solid-900.woff2",
+        "webfonts/fa-solid-900.woff",
+        "webfonts/fa-solid-900.ttf",
+        "webfonts/fa-solid-900.svg"
       ]
     }
   }
