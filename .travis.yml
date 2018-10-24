@@ -1,13 +1,15 @@
 sudo: false
 language: node_js
-before_install:
-- gem install sass compass
 node_js:
-- iojs
-before_script:
+- node
+before_install:
 - npm config set registry http://registry.npmjs.org/
 - npm install -g bower grunt-cli generator-angular generator-karma grunt-karma yo
-- bower install
+- rvm install 2.0.0
+- gem install sass compass
+before_script:
+- npm install
+- bower update
 script:
 - grunt build
 deploy:
