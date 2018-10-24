@@ -144,7 +144,7 @@ angular.module('minionsManagedNgApp')
     };
     $scope.getLogUrl = function(minion) {
       if (minion.dataCenter.startsWith('mdc')) {
-        switch (minion._id.slice(17, 18)) {
+        switch (minion._id.slice(-5, -3)) {
           case '00': // gecko-t-win10-64-hw
             return 'https://papertrailapp.com/systems/t-w1064-ms-' + minion._id.slice(-3) + '.' + minion.dataCenter + '.mozilla.com/events';
           case '01': // gecko-t-win7-32-hw
@@ -161,7 +161,7 @@ angular.module('minionsManagedNgApp')
     };
     $scope.getHostname = function(minion) {
       if (minion.dataCenter.startsWith('mdc')) {
-        switch (minion._id.slice(17, 18)) {
+        switch (minion._id.slice(-5, -3)) {
           case '00': // gecko-t-win10-64-hw
             return 't-w1064-ms-' + minion._id.slice(-3);
           case '01': // gecko-t-win7-32-hw
