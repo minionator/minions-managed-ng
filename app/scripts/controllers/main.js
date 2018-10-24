@@ -148,6 +148,12 @@ angular.module('minionsManagedNgApp')
       }
       return 'https://papertrailapp.com/systems/' + minion._id.replace('0000000', 'i-') + '.' + minion.workerType + '.' + minion.dataCenter + '.mozilla.com/events';
     };
+    $scope.getHostname = function(minion) {
+      if (minion.dataCenter.startsWith('mdc')) {
+        return 't-w1064-ms-' + minion._id.slice(-3);
+      }
+      return minion._id.replace('0000000', 'i-');
+    };
     $scope.showBody = {
       alive: false,
       idle: false,

@@ -41,7 +41,7 @@
     }">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a class="pointer" ng-click="minion.showbody=!minion.showbody">{{minion._id.replace('0000000', 'i-')}}</a>
+          <a class="pointer" ng-click="minion.showbody=!minion.showbody">{{getHostname(minion)}}</a>
         </h4>
         tasks: {{minion.tasks.length}}, restarts: {{minion.restarts.length}}, uptime: <span>{{getUptime(minion.created, minion.terminated.time)}}</span>
       </div>
