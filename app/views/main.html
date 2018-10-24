@@ -32,7 +32,7 @@
     <div class="cube1"></div>
     <div class="cube2"></div>
   </div>
-  <div class="clearfix col-sm-2" ng-repeat="minion in minions[state] | orderBy: 'created'" ng-hide="loading.minions[state]">
+  <div class="clearfix col-sm-2" ng-repeat="minion in minions[state] | orderBy: ['created', '_id']" ng-hide="loading.minions[state]">
     <div class="panel" ng-class="{
       'panel-default': ((state === 'dead') || ((state === 'alive') && (minion.tasks.length === 0 && (minion.restarts.length - minion.tasks.length) < 2))),
       'panel-info': ((state === 'alive') && (minion.tasks.length > 0 && (minion.restarts.length - minion.tasks.length) < 2)),
