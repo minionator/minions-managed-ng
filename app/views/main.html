@@ -81,11 +81,11 @@
             
             <a href="https://tools.taskcluster.net/task-inspector/#{{task.id}}" class="btn" ng-class="{
               'btn-success': (task.result === 'Success'),
-              'btn-danger': (task.result === 'Failure'),
+              'btn-danger': ((task.result !== undefined) && ((task.result === 'Failure') || task.result.startsWith('ERROR'))),
               'btn-default': (task.result === undefined)}">
               <span class="glyphicon" ng-class="{
                 'glyphicon-thumbs-up': (task.result === 'Success'),
-                'glyphicon-thumbs-down': (task.result === 'Failure'),
+                'glyphicon-thumbs-down': ((task.result !== undefined) && ((task.result === 'Failure') || task.result.startsWith('ERROR'))),
                 'glyphicon-hourglass': (task.result === undefined)}" aria-hidden="true"></span>
               {{task.id}}
             </a><br />
@@ -93,6 +93,10 @@
             <span ng-show="task.completed">
               ~ {{task.completed | date: 'HH:mm:ss'}}
               ({{getUptime(task.started, task.completed, false, true)}})
+              <span ng-show="task.result.startsWith('ERROR')">
+                <br />
+                {{task.result}}
+              </span>
             </span>
           </li>
         </ul>
