@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs">
   <li ng-repeat="workerType in workerTypes" ng-class="{active: workerType === selected.workerType}" ng-show="counts[workerType].count">
     <a class="pointer" ng-href="#!/minions/{{workerType}}/{{selected.dataCenter}}">
-      <span class="fab" ng-class="{'fa-apple': workerType.includes('-osx-'),'fa-linux': workerType.includes('-linux-'),'fa-windows': workerType.includes('-win')}"></span>
+      <span class="fab" ng-class="{'fa-apple': workerType.includes('-osx-'), 'fa-linux': workerType.includes('-linux-'), 'fa-windows': workerType.includes('-win')}"></span>
       {{workerType}} ({{counts[workerType].count}})
     </a>
   </li>
@@ -12,7 +12,10 @@
   </div>
   <ul class="nav nav-tabs" ng-hide="loading.counts">
     <li  ng-repeat="dataCenter in dataCenters" ng-class="{active: dataCenter === selected.dataCenter}" enabled="counts[selected.workerType][dataCenter]">
-      <a class="pointer" ng-href="#!/minions/{{selected.workerType}}/{{dataCenter}}" enabled="counts[selected.workerType][dataCenter]">{{getRegion(dataCenter)}} ({{counts[selected.workerType][dataCenter] || 0}})</a>
+      <a class="pointer" ng-href="#!/minions/{{selected.workerType}}/{{dataCenter}}" enabled="counts[selected.workerType][dataCenter]">
+        <span class="fas" ng-class="{'fa-server': dataCenter.startsWith('mdc'), 'fa-cloud': !dataCenter.startsWith('mdc')}"></span>
+        {{getRegion(dataCenter)}} ({{counts[selected.workerType][dataCenter] || 0}})
+      </a>
     </li>
   </ul>
 </div>
@@ -45,7 +48,7 @@
       <div class="panel-heading">
         <h4 class="panel-title">
           <a class="pointer" ng-click="minion.showbody=!minion.showbody">
-            <span class="fab" ng-class="{'fa-apple': minion.workerType.includes('-osx-'),'fa-linux': minion.workerType.includes('-linux-'),'fa-windows': minion.workerType.includes('-win')}"></span>
+            <span class="fab" ng-class="{'fa-apple': minion.workerType.includes('-osx-'), 'fa-linux': minion.workerType.includes('-linux-'), 'fa-windows': minion.workerType.includes('-win')}"></span>
             {{getHostname(minion)}}
           </a>
         </h4>
