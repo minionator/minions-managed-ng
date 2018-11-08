@@ -25,6 +25,11 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main'
       })
+      .when('/minion/:workerType?/:dataCenter?/:hostname?', {
+        templateUrl: 'views/minion.html',
+        controller: 'MinionCtrl',
+        controllerAs: 'minion'
+      })
       .when('/chart', {
         templateUrl: 'views/chart.html',
         controller: 'ChartCtrl',

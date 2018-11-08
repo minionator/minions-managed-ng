@@ -18,9 +18,14 @@ angular.module('minionsManagedNgApp')
         period: '@_period',
         workerType: '@_workerType',
         dataCenter: '@_dataCenter',
-        limit: '@_limit'
+        limit: '@_limit',
+        id: '@_id'
       },
       {
+        get: {
+          url: api + 'minion/:id',
+          isArray: false
+        },
         query: {
           url: api + 'minions/:state/:workerType/:dataCenter/:limit',
           isArray: true

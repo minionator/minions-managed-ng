@@ -23,22 +23,14 @@
   <div class="row">
     <div class="clearfix col-sm-10">
       <h3>
-        <span ng-show="state === 'alive'">
-          <span class="fas fa-heartbeat"></span>
-          living
-        </span>
-        <span ng-show="state !== 'alive'">
-          <span class="fas" ng-class="{'fa-bed': state === 'idle', 'fa-ghost': state === 'dead'}"></span>
-          {{state}}
-        </span>
-        minions ({{minions[state].length}})
+        <span ng-show="state === 'alive'">living</span><span ng-show="state !== 'alive'">{{state}}</span> minions ({{minions[state].length}})
       </h3>
       <p ng-show="state === 'idle'">minions that did no work before expiring.</p>
       <p ng-show="['idle', 'dead'].includes(state) && minions[state].length === 100">results limited to the last 100.</p>
     </div>
     <div class="clearfix col-sm-2">
-      <button class="btn btn-small pull-right" ng-click="toggle(state)">
-        <span class="glyphicon"" ng-class="{'glyphicon-plus': !showBody[state], 'glyphicon-minus': showBody[state]}"></span>
+      <button class="btn btn-sm btn-outline-primary pull-right" ng-click="toggle(state)">
+        <span class="glyphicon" ng-class="{'glyphicon-plus': !showBody[state], 'glyphicon-minus': showBody[state]}"></span>
       </button>
     </div>
   </div>
@@ -54,12 +46,15 @@
       'panel-danger': ((state === 'alive') && ((minion.restarts.length - minion.tasks.length) > 2))
     }">
       <div class="panel-heading">
-        <h4 class="panel-title">
-          <a class="pointer" ng-click="minion.showbody=!minion.showbody">
-            <span class="fab" ng-class="{'fa-apple': minion.workerType.includes('-osx-'), 'fa-linux': minion.workerType.includes('-linux-'), 'fa-windows': minion.workerType.includes('-win')}"></span>
-            {{getHostname(minion)}}
-          </a>
-        </h4>
+        <span class="glyphicon small pointer pull-right" ng-class="{'glyphicon-plus': !minion.showbody, 'glyphicon-minus': minion.showbody}" ng-click="minion.showbody=!minion.showbody"></span>
+        <div>
+          <h4 class="panel-title">
+            <a class="pointer" ng-href="#!/minion/{{minion.workerType}}/{{minion.dataCenter}}/{{getHostname(minion)}}">
+              <span class="fab" ng-class="{'fa-apple': minion.workerType.includes('-osx-'), 'fa-linux': minion.workerType.includes('-linux-'), 'fa-windows': minion.workerType.includes('-win')}"></span>
+              {{getHostname(minion)}}
+            </a>
+          </h4>
+        </div>
         tasks: {{minion.tasks.length}}, restarts: {{minion.restarts.length}}, uptime: <span>{{getUptime(minion.created, minion.terminated.time)}}</span>
       </div>
       <div class="panel-body" ng-show="minion.showbody">

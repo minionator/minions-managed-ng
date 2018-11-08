@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="col-md-12 col-lg-12">
+    <div id="timeline-pre"></div>
+    <div id="timeline">
+      <div class="text-center timeline-status-intransit">
+        <p class="timeline-status text-tight">
+          / {{minion.workerType}}
+          / {{minion.dataCenter}}
+          / {{minion._id}}
+        </p>
+      </div>
+      <div class="timeline-list">
+         <div class="timeline-item" ng-repeat="e in events | orderBy : 'started'">
+            <div ng-class="{
+              'timeline-icon status-delivered': e.eventType === 'task' && e.result === 'Success',
+              'timeline-icon status-exception': e.eventType === 'task' && e.result !== 'Success' && e.completed,
+              'timeline-icon status-outfordelivery': e.eventType === 'restart' && e.completed,
+              'timeline-icon status-deliveryoffice': e.eventType === 'job' && e.completed,
+              'timeline-icon status-intransit': !e.completed}">
+              <span class="fas" ng-class="{'fa-tasks': e.eventType === 'task', 'fa-cogs': e.eventType === 'job', 'fa-power-off': e.eventType === 'restart'}"></span>
+            </div>
+            <div class="timeline-date">
+              {{e.started | date : 'HH:mm'}}
+              <span ng-show="e.completed" style="display:inline">
+                - {{e.completed | date : 'HH:mm'}}
+              </span>
+              <span class="light">
+                {{e.started | date : 'MMM d'}}
+              </span>
+            </div>
+            <div class="timeline-content">
+              <span ng-show="e.eventType === 'task'">
+                task <a href="https://tools.taskcluster.net/task-inspector/#{{e.id}}">{{e.id}}</a>
+              </span>
+              <span ng-show="e.eventType === 'job'">{{e.name}}</span>
+              <span ng-show="e.eventType === 'restart'">system restart</span>
+              <span class="light" ng-show="e.eventType === 'restart'">
+                requested by: {{e.user | lowercase}}, with comment: {{e.comment}}
+              </span>
+              <span class="light" ng-show="e.eventType === 'task' && e.result === 'Success'">
+                task completed successfuly in {{ getUptime(e.started, e.completed, false, true) }}
+              </span>
+              <span class="light" ng-show="e.eventType === 'task' && e.completed && e.result !== 'Success'">
+                task completed with status: {{e.result}}
+              </span>
+              <span class="light" ng-show="e.eventType === 'task' && !e.completed">
+                task in progress (or completion data not received) ...
+              </span>
+              <span class="light" ng-show="e.eventType === 'job' && e.completed">
+                job completed in {{ getUptime(e.started, e.completed, false, true) }}
+              </span>
+              <span class="light" ng-show="e.eventType === 'job' && !e.completed">
+                job in progress (or completion data not received) ...
+              </span>
+            </div>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>

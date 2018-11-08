@@ -152,3 +152,137 @@ body {
     border-bottom: 0;
   }
 }
+
+
+.timeline-detail {
+ padding:3rem 0
+}
+#timeline {
+ margin-bottom:1rem
+}
+[class*=timeline-status-] p {
+ margin:0;
+ color:#fff;
+ /*font-size:1.1rem;
+ text-align:center
+ text-transform:uppercase;*/
+}
+[class*=timeline-status-] {
+ padding:1.6rem 0
+}
+.timeline-status-intransit {
+ background-color:#65aee0
+}
+.timeline-status-outfordelivery {
+ background-color:#f5a551
+}
+.timeline-status-deliveryoffice {
+ background-color:#f7dc6f
+}
+.timeline-status-delivered {
+ background-color:#4cbb87
+}
+.timeline-status-attemptfail {
+ background-color:#b789c7
+}
+.timeline-status-error,.timeline-status-exception {
+ background-color:#d26759
+}
+.timeline-status-expired {
+ background-color:#616e7d
+}
+.timeline-status-pending {
+ background-color:#ccc
+}
+.timeline-status-inforeceived {
+ background-color:#214977
+}
+.timeline-list {
+ border:1px solid #e5e5e5
+}
+.timeline-item {
+ border-left:1px solid #e5e5e5;
+ position:relative;
+ padding:2rem 1.5rem .5rem 2.5rem;
+ /*font-size:.9rem;*/
+ 
+ margin-left:3rem;
+ min-height:5rem
+}
+.timeline-item:last-child {
+ padding-bottom:4rem
+}
+.timeline-item .timeline-date {
+ margin-bottom:.5rem
+}
+.timeline-item .timeline-date span.light {
+ color:#888;
+ font-size:85%;
+ padding-left:.4rem
+}
+.timeline-item .timeline-content {
+ padding:.5rem .8rem;
+ background-color:#f4f4f4;
+ border-radius:.5rem
+}
+.timeline-item .timeline-content span.light {
+ display:block;
+ color:#888;
+ /*font-size:85%;*/
+}
+.timeline-item .timeline-icon {
+ line-height:2.6rem;
+ position:absolute;
+ left:-1.3rem;
+ width:2.6rem;
+ height:2.6rem;
+ text-align:center;
+ border-radius:50%;
+ /*font-size:1.1rem;*/
+ background-color:#fff;
+ color:#fff
+}
+.timeline-item .timeline-icon.status-sponsored {
+ background-color:#f68
+}
+.timeline-item .timeline-icon.status-delivered {
+ background-color:#4cbb87
+}
+.timeline-item .timeline-icon.status-outfordelivery {
+ background-color:#f5a551
+}
+.timeline-item .timeline-icon.status-deliveryoffice {
+ background-color:#f7dc6f
+}
+.timeline-item .timeline-icon.status-attemptfail {
+ background-color:#b789c7
+}
+.timeline-item .timeline-icon.status-exception {
+ background-color:#d26759
+}
+.timeline-item .timeline-icon.status-inforeceived {
+ background-color:#214977
+}
+.timeline-item .timeline-icon.status-intransit {
+ color:#e5e5e5;
+ border:1px solid #e5e5e5;
+ /*font-size:.6rem;*/
+}
+@media(min-width:992px) {
+ .timeline-item {
+  margin-left:20rem
+ }
+ .timeline-item .timeline-date {
+  position:absolute;
+  left:-20rem;
+  width:17.5rem;
+  text-align:right
+ }
+ .timeline-item .timeline-date span {
+  display:block
+ }
+ .timeline-item .timeline-content {
+  padding:0;
+  background-color:transparent
+ }
+}
