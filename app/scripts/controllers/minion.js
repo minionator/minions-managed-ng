@@ -91,6 +91,6 @@ angular.module('minionsManagedNgApp')
       } else if (minutes > 0) {
         return minutes + ' ' + pluralise(minutes, 'minute');
       }
-      return seconds + pluralise(seconds, 'second');
+      return seconds + ' ' + pluralise(seconds, 'second');
     };
   });
