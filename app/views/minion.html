@@ -45,19 +45,15 @@
               <span class="light" ng-show="e.eventType === 'restart'">
                 requested by: {{e.user | lowercase}}, with comment: {{e.comment}}
               </span>
-              <span class="light" ng-show="e.eventType === 'task' && e.result === 'Success'">
-                task completed successfuly in {{ getUptime(e.started, e.completed, false, true) }}
-              </span>
-              <span class="light" ng-show="e.eventType === 'task' && e.completed && e.result !== 'Success'">
+              <span class="light" ng-show="(e.eventType === 'task' && e.result === 'Success')" ng-bind="'task completed successfuly in ' + getUptime(e.started, e.completed, false, true)"></span>
+              <span class="light" ng-show="(e.eventType === 'task' && e.completed && e.result !== 'Success')">
                 task completed with status: {{e.result}}
               </span>
-              <span class="light" ng-show="e.eventType === 'task' && !e.completed">
+              <span class="light" ng-show="(e.eventType === 'task' && !e.completed)">
                 task in progress (or completion data not received) ...
               </span>
-              <span class="light" ng-show="e.eventType === 'job' && e.completed">
-                job completed in {{ getUptime(e.started, e.completed, false, true) }}
-              </span>
-              <span class="light" ng-show="e.eventType === 'job' && !e.completed">
+              <span class="light" ng-show="(e.eventType === 'job' && e.completed)" ng-bind="'job completed in ' + getUptime(e.started, e.completed, false, true)"></span>
+              <span class="light" ng-show="(e.eventType === 'job' && !e.completed)">
                 job in progress (or completion data not received) ...
               </span>
             </div>

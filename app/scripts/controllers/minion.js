@@ -47,8 +47,11 @@ angular.module('minionsManagedNgApp')
       Array.prototype.push.apply(events, minion.restarts.map(function(e) { e.started = e.time; e.eventType = 'restart'; return e; }));
       $scope.events = events;
     });
+    function pluralise (value, period) {
+      return ((value === 1) ? period : period + 's');
+    }
     $scope.getHostname = function(minion) {
-      if (minion.dataCenter.startsWith('mdc') || minion.dataCenter.startsWith('mtv')) {
+      if (minion.dataCenter && (minion.dataCenter.startsWith('mdc') || minion.dataCenter.startsWith('mtv'))) {
         switch (minion._id.slice(-7, -5)) {
           case '00': // gecko-t-win10-64-hw
             return 't-w1064-ms-' + minion._id.slice(-3);
@@ -64,7 +67,9 @@ angular.module('minionsManagedNgApp')
             return minion._id;
         }
       }
-      return minion._id.replace('0000000', 'i-');
+      return (minion._id)
+        ? minion._id.replace('0000000', 'i-')
+        : undefined;
     };
     $scope.getUptime = function(start, end, precise, time) {
       if (start == null) {
