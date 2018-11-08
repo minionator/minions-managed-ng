@@ -45,6 +45,7 @@
               <span class="light" ng-show="e.eventType === 'restart'">
                 requested by: {{e.user | lowercase}}, with comment: {{e.comment}}
               </span>
+              <span class="light" ng-show="(e.eventType === 'restart' && e.completed)" ng-bind="'restart completed in ' + getUptime(e.started, e.completed, false, true)"></span>
               <span class="light" ng-show="(e.eventType === 'task' && e.result === 'Success')" ng-bind="'task completed successfuly in ' + getUptime(e.started, e.completed, false, true)"></span>
               <span class="light" ng-show="(e.eventType === 'task' && e.completed && e.result !== 'Success')">
                 task completed with status: {{e.result}}
