@@ -12,7 +12,7 @@ angular.module('minionsManagedNgApp')
     $scope.path = $location.path();
     $scope.routeParams = $routeParams;
     $scope.workerTypes = ['gecko-1-b-win2012', 'gecko-2-b-win2012', 'gecko-3-b-win2012', 'gecko-t-win7-32', 'gecko-t-win7-32-gpu', 'gecko-t-win10-64', 'gecko-t-win10-64-gpu', 'gecko-t-win10-64-hw'];
-    $scope.dataCenters = ($routeParams.workerType && ($routeParams.workerType.endsWith('-hw'))) ? ['mdc1', 'mdc2'] : ['use1', 'use2', 'usw1', 'usw2', 'euc1'];
+    $scope.dataCenters = ($routeParams.workerType && ($routeParams.workerType.endsWith('-hw'))) ? ['mdc1', 'mdc2', 'mtv1', 'mtv2'] : ['use1', 'use2', 'usw1', 'usw2', 'euc1'];
     $scope.selected = {
       workerType: $routeParams.workerType || $scope.workerTypes[0],
       dataCenter: $routeParams.dataCenter || $scope.dataCenters[0]
@@ -143,7 +143,7 @@ angular.module('minionsManagedNgApp')
       }
     };
     $scope.getLogUrl = function(minion) {
-      if (minion.dataCenter.startsWith('mdc')) {
+      if (minion.dataCenter.startsWith('mdc') || minion.dataCenter.startsWith('mtv')) {
         switch (minion._id.slice(-7, -5)) {
           case '00': // gecko-t-win10-64-hw
             return 'https://papertrailapp.com/systems/t-w1064-ms-' + minion._id.slice(-3) + '.' + minion.dataCenter + '.mozilla.com/events';
@@ -153,6 +153,8 @@ angular.module('minionsManagedNgApp')
             return 'https://papertrailapp.com/systems/t-yosemite-r7-' + minion._id.slice(-3) + '.test.releng.' + minion.dataCenter + '.mozilla.com/events';
           case '03': // gecko-t-linux-talos
             return 'https://papertrailapp.com/systems/t-linux64-ms-' + minion._id.slice(-3) + '.test.releng.' + minion.dataCenter + '.mozilla.com/events';
+          case '04': // gecko-t-win10-64-ux
+            return 'https://papertrailapp.com/systems/t-w1064-ux-' + minion._id.slice(-3) + '.' + minion.dataCenter + '.mozilla.com/events';
           default:
             return null;
         }
@@ -160,7 +162,7 @@ angular.module('minionsManagedNgApp')
       return 'https://papertrailapp.com/systems/' + minion._id.replace('0000000', 'i-') + '.' + minion.workerType + '.' + minion.dataCenter + '.mozilla.com/events';
     };
     $scope.getHostname = function(minion) {
-      if (minion.dataCenter.startsWith('mdc')) {
+      if (minion.dataCenter.startsWith('mdc') || minion.dataCenter.startsWith('mtv')) {
         switch (minion._id.slice(-7, -5)) {
           case '00': // gecko-t-win10-64-hw
             return 't-w1064-ms-' + minion._id.slice(-3);
@@ -170,6 +172,8 @@ angular.module('minionsManagedNgApp')
             return 't-yosemite-r7-' + minion._id.slice(-3);
           case '03': // gecko-t-linux-talos
             return 't-linux64-ms-' + minion._id.slice(-3);
+          case '04': // gecko-t-win10-64-ux
+            return 't-w1064-ux-' + minion._id.slice(-3);
           default:
             return minion._id;
         }

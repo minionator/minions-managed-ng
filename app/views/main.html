@@ -13,7 +13,7 @@
   <ul class="nav nav-tabs" ng-hide="loading.counts">
     <li  ng-repeat="dataCenter in dataCenters" ng-class="{active: dataCenter === selected.dataCenter}" enabled="counts[selected.workerType][dataCenter]">
       <a class="pointer" ng-href="#!/minions/{{selected.workerType}}/{{dataCenter}}" enabled="counts[selected.workerType][dataCenter]">
-        <span class="fas" ng-class="{'fa-server': dataCenter.startsWith('mdc'), 'fa-cloud': !dataCenter.startsWith('mdc')}"></span>
+        <span class="fas" ng-class="{'fa-server': dataCenter.startsWith('mdc') || dataCenter.startsWith('mtv'), 'fa-cloud': !dataCenter.startsWith('mdc') && !dataCenter.startsWith('mtv')}"></span>
         {{getRegion(dataCenter)}} ({{counts[selected.workerType][dataCenter] || 0}})
       </a>
     </li>
@@ -78,7 +78,7 @@
           <a href="{{getLogUrl(minion)}}" title="event logs">
             <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
           </a>
-          <a href="https://console.aws.amazon.com/ec2/v2/home?region={{getRegion(minion.dataCenter)}}#Instances:instanceId={{minion._id.replace('0000000', 'i-')}}" title="ec2 console" ng-hide="(minion.dataCenter.startsWith('mdc'))">
+          <a href="https://console.aws.amazon.com/ec2/v2/home?region={{getRegion(minion.dataCenter)}}#Instances:instanceId={{minion._id.replace('0000000', 'i-')}}" title="ec2 console" ng-hide="(minion.dataCenter.startsWith('mdc') || minion.dataCenter.startsWith('mtv'))">
             <span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span>
           </a>
         </div>

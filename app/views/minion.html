@@ -2,11 +2,19 @@
   <div class="col-md-12 col-lg-12">
     <div id="timeline-pre"></div>
     <div id="timeline">
-      <div class="text-center timeline-status-intransit">
-        <p class="timeline-status text-tight">
-          / {{minion.workerType}}
-          / {{minion.dataCenter}}
-          / {{minion._id}}
+      <div class="timeline-status-intransit">
+        <p class="timeline-status" style="margin-left: 20px;">
+          /
+          <a class="pointer" ng-href="#!/minions/{{minion.workerType}}/{{minion.dataCenter}}">
+            <span class="fab" ng-class="{'fa-apple': minion.workerType.includes('-osx-'), 'fa-linux': minion.workerType.includes('-linux-'), 'fa-windows': minion.workerType.includes('-win')}"></span>
+            {{minion.workerType}}
+          </a>
+          / 
+          <a class="pointer" ng-href="#!/minions/{{minion.workerType}}/{{minion.dataCenter}}">
+            <span class="fas" ng-class="{'fa-server': minion.dataCenter.startsWith('mdc') || minion.dataCenter.startsWith('mtv'), 'fa-cloud': !minion.dataCenter.startsWith('mdc') && !minion.dataCenter.startsWith('mdc')}"></span>
+            {{minion.dataCenter}}
+          </a>
+          / {{getHostname(minion)}}
         </p>
       </div>
       <div class="timeline-list">
