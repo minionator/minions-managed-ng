@@ -40,7 +40,7 @@
               <span ng-show="e.eventType === 'task'">
                 task <a href="https://tools.taskcluster.net/task-inspector/#{{e.id}}">{{e.id}}</a>
               </span>
-              <span ng-show="e.eventType === 'job'">{{e.name}}</span>
+              <span ng-show="e.eventType === 'job'">{{e.name.replace('/', ' / ')}}</span>
               <span ng-show="e.eventType === 'restart'">system restart</span>
               <span class="light" ng-show="e.eventType === 'restart'">
                 requested by: {{e.user | lowercase}}, with comment: {{e.comment}}
