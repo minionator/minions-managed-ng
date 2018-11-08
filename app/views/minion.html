@@ -20,9 +20,9 @@
               <span class="fas" ng-class="{'fa-tasks': e.eventType === 'task', 'fa-cogs': e.eventType === 'job', 'fa-power-off': e.eventType === 'restart'}"></span>
             </div>
             <div class="timeline-date">
-              {{e.started | date : 'HH:mm'}}
+              {{e.started | date : 'HH:mm:ss'}} ~
               <span ng-show="e.completed" style="display:inline">
-                - {{e.completed | date : 'HH:mm'}}
+                {{e.completed | date : 'HH:mm:ss'}}
               </span>
               <span class="light">
                 {{e.started | date : 'MMM d'}}
