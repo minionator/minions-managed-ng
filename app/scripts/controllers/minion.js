@@ -47,6 +47,7 @@ angular.module('minionsManagedNgApp')
       Array.prototype.push.apply(events, minion.restarts.map(function(e) { e.started = e.time; e.eventType = 'restart'; return e; }));
       $scope.events = events;
       $scope.dates = Array.from(new Set(events.map(function(e) { return e.started.substring(0, 10); })));
+      $scope.dates.sort();
       $scope.showbody = {};
       $scope.showbody[$scope.dates[$scope.dates.length-1]] = true;
     });
