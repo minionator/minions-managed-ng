@@ -71,7 +71,7 @@ angular.module('minionsManagedNgApp')
       }
     };
     $scope.getQuerystring = function(event) {
-      var querystring = 'time=' + (new Date(event.started).getTime());
+      var querystring = 'time=' + (new Date(event.started).getTime()/1000|0);
       if (event.eventType === 'job') {
         querystring += '&q=program%3A' + event.name.replace('/', '%20');
       } else if (event.eventType === 'task') {
