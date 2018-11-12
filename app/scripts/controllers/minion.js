@@ -54,6 +54,52 @@ angular.module('minionsManagedNgApp')
     function pluralise (value, period) {
       return ((value === 1) ? period : period + 's');
     }
+    $scope.getRegion = function(dataCenter) {
+      switch (dataCenter) {
+        case 'use1':
+          return 'us-east-1';
+        case 'use2':
+          return 'us-east-2';
+        case 'usw1':
+          return 'us-west-1';
+        case 'usw2':
+          return 'us-west-2';
+        case 'euc1':
+          return 'eu-central-1';
+        default:
+          return dataCenter;
+      }
+    };
+    $scope.getQuerystring = function(event) {
+      var querystring = 'time=' + (new Date(event.started).getTime());
+      if (event.eventType === 'job') {
+        querystring += '&q=program%3A' + event.name.replace('/', '%20');
+      } else if (event.eventType === 'task') {
+        querystring += '&q=program%3Ageneric-worker%20' + event.id;
+      } else if (event.eventType === 'restart') {
+        querystring += '&q=program%3A(user32 OR sudo)';
+      }
+      return querystring;
+    };
+    $scope.getLogUrl = function(minion) {
+      if (minion.dataCenter.startsWith('mdc') || minion.dataCenter.startsWith('mtv')) {
+        switch (minion._id.slice(-7, -5)) {
+          case '00': // gecko-t-win10-64-hw
+            return 'https://papertrailapp.com/systems/t-w1064-ms-' + minion._id.slice(-3) + '.' + minion.dataCenter + '.mozilla.com/events';
+          case '01': // gecko-t-win7-32-hw
+            return 'https://papertrailapp.com/systems/t-w732-ms-' + minion._id.slice(-3) + '.' + minion.dataCenter + '.mozilla.com/events';
+          case '02': // gecko-t-osx-1010
+            return 'https://papertrailapp.com/systems/t-yosemite-r7-' + minion._id.slice(-3) + '.test.releng.' + minion.dataCenter + '.mozilla.com/events';
+          case '03': // gecko-t-linux-talos
+            return 'https://papertrailapp.com/systems/t-linux64-ms-' + minion._id.slice(-3) + '.test.releng.' + minion.dataCenter + '.mozilla.com/events';
+          case '04': // gecko-t-win10-64-ux
+            return 'https://papertrailapp.com/systems/t-w1064-ux-' + minion._id.slice(-3) + '.' + minion.dataCenter + '.mozilla.com/events';
+          default:
+            return null;
+        }
+      }
+      return 'https://papertrailapp.com/systems/' + minion._id.replace('0000000', 'i-') + '.' + minion.workerType + '.' + minion.dataCenter + '.mozilla.com/events';
+    };
     $scope.getHostname = function(minion) {
       if (minion.dataCenter && (minion.dataCenter.startsWith('mdc') || minion.dataCenter.startsWith('mtv'))) {
         switch (minion._id.slice(-7, -5)) {

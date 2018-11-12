@@ -9,9 +9,13 @@
       / 
       <a class="pointer" ng-href="#!/minions/{{minion.workerType}}/{{minion.dataCenter}}">
         <span class="fas" ng-class="{'fa-server': minion.dataCenter.startsWith('mdc') || minion.dataCenter.startsWith('mtv'), 'fa-cloud': !minion.dataCenter.startsWith('mdc') && !minion.dataCenter.startsWith('mdc')}"></span>
-        {{minion.dataCenter}}
+        {{getRegion(minion.dataCenter)}}
       </a>
-      / {{getHostname(minion)}}
+      /
+      <a href="https://console.aws.amazon.com/ec2/v2/home?region={{getRegion(minion.dataCenter)}}#Instances:instanceId={{minion._id.replace('0000000', 'i-')}}" title="ec2 console" ng-hide="(minion.dataCenter.startsWith('mdc') || minion.dataCenter.startsWith('mtv'))">
+        <span class="fab fa-aws"></span>
+      </a>
+      {{getHostname(minion)}}
     </div>
     <div id="timeline-{{date}}" ng-repeat="date in dates | orderBy: 'toString()' : true">
       <div class="timeline-status-intransit" style="padding-left: 20px; padding-right: 20px;">
@@ -38,6 +42,9 @@
               <span class="light">
                 {{e.started | date : 'MMM d'}}
               </span>
+              <a href="{{getLogUrl(minion)}}?{{getQuerystring(e)}}">
+                <span class="fas fa-file-alt"></span>
+              </a>
             </div>
             <div class="timeline-content">
               <span ng-show="e.eventType === 'task'">
