@@ -1,24 +1,27 @@
 <div class="row">
   <div class="col-md-12 col-lg-12">
-    <div id="timeline-pre"></div>
-    <div id="timeline">
-      <div class="timeline-status-intransit">
-        <p class="timeline-status" style="margin-left: 20px;">
-          /
-          <a class="pointer" ng-href="#!/minions/{{minion.workerType}}/{{minion.dataCenter}}">
-            <span class="fab" ng-class="{'fa-apple': minion.workerType.includes('-osx-'), 'fa-linux': minion.workerType.includes('-linux-'), 'fa-windows': minion.workerType.includes('-win')}"></span>
-            {{minion.workerType}}
-          </a>
-          / 
-          <a class="pointer" ng-href="#!/minions/{{minion.workerType}}/{{minion.dataCenter}}">
-            <span class="fas" ng-class="{'fa-server': minion.dataCenter.startsWith('mdc') || minion.dataCenter.startsWith('mtv'), 'fa-cloud': !minion.dataCenter.startsWith('mdc') && !minion.dataCenter.startsWith('mdc')}"></span>
-            {{minion.dataCenter}}
-          </a>
-          / {{getHostname(minion)}}
+    <div id="timeline-pre">
+      /
+      <a class="pointer" ng-href="#!/minions/{{minion.workerType}}/{{minion.dataCenter}}">
+        <span class="fab" ng-class="{'fa-apple': minion.workerType.includes('-osx-'), 'fa-linux': minion.workerType.includes('-linux-'), 'fa-windows': minion.workerType.includes('-win')}"></span>
+        {{minion.workerType}}
+      </a>
+      / 
+      <a class="pointer" ng-href="#!/minions/{{minion.workerType}}/{{minion.dataCenter}}">
+        <span class="fas" ng-class="{'fa-server': minion.dataCenter.startsWith('mdc') || minion.dataCenter.startsWith('mtv'), 'fa-cloud': !minion.dataCenter.startsWith('mdc') && !minion.dataCenter.startsWith('mdc')}"></span>
+        {{minion.dataCenter}}
+      </a>
+      / {{getHostname(minion)}}
+    </div>
+    <div id="timeline-{{date}}" ng-repeat="date in dates | orderBy: 'toString()' : true">
+      <div class="timeline-status-intransit" style="padding-left: 20px; padding-right: 20px;">
+        <span class="glyphicon small pointer pull-right" ng-class="{'glyphicon-plus': !showbody[date], 'glyphicon-minus': showbody[date]}" ng-click="showbody[date]=!showbody[date]"></span>
+        <p class="timeline-status">
+          <span class="pointer" ng-click="showbody[date]=!showbody[date]">{{date}}</span>
         </p>
       </div>
-      <div class="timeline-list">
-         <div class="timeline-item" ng-repeat="e in events | orderBy : 'started'">
+      <div class="timeline-list" ng-show="showbody[date]">
+         <div class="timeline-item" ng-repeat="e in events | filter:dateFilter(date) | orderBy : 'started'">
             <div ng-class="{
               'timeline-icon status-delivered': e.eventType === 'task' && e.result === 'Success',
               'timeline-icon status-exception': e.eventType === 'task' && e.result !== 'Success' && e.completed,

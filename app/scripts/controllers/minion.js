@@ -46,6 +46,9 @@ angular.module('minionsManagedNgApp')
       Array.prototype.push.apply(events, minion.tasks.map(function(e) { e.eventType = 'task'; return e; }));
       Array.prototype.push.apply(events, minion.restarts.map(function(e) { e.started = e.time; e.eventType = 'restart'; return e; }));
       $scope.events = events;
+      $scope.dates = Array.from(new Set(events.map(function(e) { return e.started.substring(0, 10); })));
+      $scope.showbody = {};
+      $scope.showbody[$scope.dates[$scope.dates.length-1]] = true;
     });
     function pluralise (value, period) {
       return ((value === 1) ? period : period + 's');
@@ -92,5 +95,10 @@ angular.module('minionsManagedNgApp')
         return minutes + ' ' + pluralise(minutes, 'minute');
       }
       return seconds + ' ' + pluralise(seconds, 'second');
+    };
+    $scope.dateFilter = function(date) {
+      return function(event) {
+        return event.started.startsWith(date);
+      };
     };
   });
