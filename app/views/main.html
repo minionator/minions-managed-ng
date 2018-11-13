@@ -23,7 +23,14 @@
   <div class="row">
     <div class="clearfix col-sm-10">
       <h3>
-        <span ng-show="state === 'alive'">living</span><span ng-show="state !== 'alive'">{{state}}</span> minions ({{minions[state].length}})
+        <span class="fas" ng-class="{'fa-heartbeat': state === 'alive', 'fa-bed': state === 'idle', 'fa-ghost': state === 'dead'}"></span>
+        <span ng-show="state === 'alive'">
+          living
+        </span>
+        <span ng-show="state !== 'alive'">
+          {{state}}
+        </span>
+        minions ({{minions[state].length}})
       </h3>
       <p ng-show="state === 'idle'">minions that did no work before expiring.</p>
       <p ng-show="['idle', 'dead'].includes(state) && minions[state].length === 100">results limited to the last 100.</p>

@@ -40,11 +40,21 @@ angular.module('minionsManagedNgApp')
         ? pad((workerTypeMap[$routeParams.workerType] || unmappedWorkerType).code + '00' + $routeParams.hostname.slice(-3), 24)
         : {};
     mmApi.get({id: id}, function (minion) {
+      minion.state = ((minion.terminated && minion.terminated.time) || ((new Date(minion.lastEvent)) <= (new Date((new Date((new Date()).toISOString())).getTime() - (3 * 60 * 60 * 1000)))))
+        ? 'dead'
+        : (minion.tasks === undefined || minion.tasks.length < 1)
+          ? 'idle'
+          : 'alive';
       $scope.minion = minion;
       var events = [];
       Array.prototype.push.apply(events, minion.jobs.map(function(e) { e.eventType = 'job'; return e; }));
       Array.prototype.push.apply(events, minion.tasks.map(function(e) { e.eventType = 'task'; return e; }));
       Array.prototype.push.apply(events, minion.restarts.map(function(e) { e.started = e.time; e.eventType = 'restart'; return e; }));
+      if (minion.terminated) {
+        minion.terminated.started = minion.terminated.time;
+        minion.terminated.eventType = 'kill';
+        events.push(minion.terminated);
+      }
       $scope.events = events;
       $scope.dates = Array.from(new Set(events.map(function(e) { return e.started.substring(0, 10); })));
       $scope.dates.sort();
@@ -76,7 +86,7 @@ angular.module('minionsManagedNgApp')
         querystring += '&q=program%3A' + event.name.replace('/', '%20');
       } else if (event.eventType === 'task') {
         querystring += '&q=program%3Ageneric-worker%20' + event.id;
-      } else if (event.eventType === 'restart') {
+      } else if (event.eventType === 'restart' || event.eventType === 'kill') {
         querystring += '&q=program%3A(user32 OR sudo)';
       }
       return querystring;
@@ -125,7 +135,7 @@ angular.module('minionsManagedNgApp')
       if (start == null) {
         return 'unknown';
       }
-      var endDate = end ? new Date(end) : new Date();
+      var endDate = end ? new Date(end) : new Date((new Date()).toISOString());
       var totalSeconds = (endDate - (new Date(start))) / 1000;
       var days = Math.floor(totalSeconds / 86400);
       var hours = Math.floor((totalSeconds - (days * 86400 )) / 3600)
