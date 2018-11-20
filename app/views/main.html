@@ -8,7 +8,7 @@
 </ul>
 <div style="padding: 10px;">
   <div style="height: 200px;">
-    <canvas class="chart chart-line" chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series" chart-options="{maintainAspectRatio: false}"></canvas>
+      <canvas class="chart chart-line" chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series" chart-options="{maintainAspectRatio: false, scales:{yAxes:[{ticks:{beginAtZero:true}}]}}"></canvas>
   </div>
   <ul class="nav nav-tabs" ng-hide="loading.counts">
     <li  ng-repeat="dataCenter in dataCenters" ng-class="{active: dataCenter === selected.dataCenter}" enabled="counts[selected.workerType][dataCenter]">
@@ -47,10 +47,10 @@
   </div>
   <div class="clearfix col-sm-2" ng-repeat="minion in minions[state] | orderBy: ['created', '_id']" ng-hide="loading.minions[state]">
     <div class="panel" ng-class="{
-      'panel-default': ((state === 'dead') || ((state === 'alive') && (minion.tasks.length === 0 && (minion.restarts.length - minion.tasks.length) < 2))),
-      'panel-info': ((state === 'alive') && (minion.tasks.length > 0 && (minion.restarts.length - minion.tasks.length) < 2)),
-      'panel-warning': ((state === 'idle') || (state === 'alive') && ((minion.restarts.length - minion.tasks.length) === 2)),
-      'panel-danger': ((state === 'alive') && ((minion.restarts.length - minion.tasks.length) > 2))
+      'panel-default': ((state === 'dead') || ((state === 'alive') && (minion.taskCount === 0 && (minion.restartCount - minion.taskCount) < 2))),
+      'panel-info': ((state === 'alive') && (minion.taskCount > 0 && (minion.restartCount - minion.taskCount) < 2)),
+      'panel-warning': ((state === 'idle') || (state === 'alive') && ((minion.restartCount - minion.taskCount) === 2)),
+      'panel-danger': ((state === 'alive') && ((minion.restartCount - minion.taskCount) > 2))
     }">
       <div class="panel-heading">
         <span class="glyphicon small pointer pull-right" ng-class="{'glyphicon-plus': !minion.showbody, 'glyphicon-minus': minion.showbody}" ng-click="minion.showbody=!minion.showbody"></span>
@@ -62,7 +62,7 @@
             </a>
           </h4>
         </div>
-        tasks: {{minion.tasks.length}}, restarts: {{minion.restarts.length}}, uptime: <span>{{getUptime(minion.created, minion.terminated.time)}}</span>
+        tasks: {{minion.taskCount}}, restarts: {{minion.restartCount}}<span ng-if="minion.created !== undefined">, uptime: {{getUptime(minion.created, minion.terminated.time)}}</span>
       </div>
       <div class="panel-body" ng-show="minion.showbody">
         <div>
@@ -89,7 +89,7 @@
             <span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span>
           </a>
         </div>
-        <ul class="list-group" ng-show="minion.tasks.length">
+        <ul class="list-group" ng-show="minion.taskCount">
           <li ng-repeat="task in minion.tasks" class="list-group-item list-group-item-default">
             
             <a href="https://tools.taskcluster.net/task-inspector/#{{task.id}}" class="btn" ng-class="{
@@ -113,7 +113,7 @@
             </span>
           </li>
         </ul>
-        <ul class="list-group" ng-show="minion.restarts.length">
+        <ul class="list-group" ng-show="minion.restartCount">
           <li ng-repeat="restart in minion.restarts" class="list-group-item list-group-item-default">
             restart {{restart.time | date: 'dd MMM HH:mm'}}<br />
             {{restart.user}}<br />
